@@ -24,6 +24,7 @@
   },
   "styles": [
     "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.css",
+    "locals/modelHelper.css",
     "panel.css"
   ],
   "scripts": [
@@ -39,6 +40,7 @@
     "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js",
     "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js",
     "locals/commandPanel.js",
+    "locals/modelHelper.js",
     "locals/tabManager.js",
     "panel.js"
   ],
