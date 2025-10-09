@@ -92,5 +92,3 @@ NaBotX offers multiple ways to interact:
 > This notice is provided for convenience only and does **not** constitute legal advice.
 > NaBotX is licensed under the **Apache License 2.0**.
 > See the [LICENSE.txt](./LICENSE.txt) file for the full legal text.
-
----
