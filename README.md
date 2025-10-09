@@ -1,12 +1,13 @@
+# [[README.md]]
 # NaBotX
 
-*NaBotX* is your AI-Powered VS Code Assistant eXtension
+*NaBotX* is your AI-Powered **VS Code Assistant eXtension**
 
 <div align="center">
   <picture width="100%">
     <source media="(prefers-color-scheme: dark)" srcset="./assets/logos/N8X.png">
     <source media="(prefers-color-scheme: light)" srcset="./assets/logos/N8X_Invert.png">
-    <img src="./assets/logos/N8X_Invert.png" alt="NabotX Logo" width="160">
+    <img src="./assets/logos/N8X_Invert.png" alt="NaBotX Logo" width="160">
   </picture>
 </div>
 
@@ -14,11 +15,22 @@
 
 ## ⚠️ Disclaimer & Privacy  
 
-* **NaBotX is not affiliated with or endorsed by OpenAI, Google, or any other model provider.**  
-* The extension ships **no credentials**. You must supply your own API keys and comply with each provider’s Terms of Service and data-usage policies.  
-* All usage costs are **your responsibility**.  
-* Credentials are stored **locally** using VS Code SecretStorage and are **never** transmitted to any server other than the endpoint you configure.  
-* The software is provided **“AS IS”, without warranty of any kind**. See the [LICENSE](./LICENSE) file.  
+1. **Independent Project** – NaBotX is an open-source community project and is **NOT** affiliated with, endorsed by, or sponsored by Google, OpenAI, Anthropic, or any other model or service provider.  
+   *All trademarks are the property of their respective owners.*  
+
+2. **Bring Your Own Key** – The extension ships **no credentials**. You must supply your own API key(s), keep them secure, and maintain an active account with each provider you choose to use.  
+
+3. **Your Cost / Your Compliance** – You are solely responsible for all usage costs, rate-limits, and for complying with each provider’s Terms of Service, Acceptable-Use Policy, privacy rules, and data-handling requirements.  
+
+4. **Local Storage Only** – NaBotX **never transmits, ships, or stores** your keys on any remote server. Credentials are stored **locally** using VS Code SecretStorage and sent only to the endpoint you configure.  
+
+5. **No Warranty** – The software is provided **“AS IS”, without warranty of any kind**, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability.  
+
+6. **Data Responsibility** – By using NaBotX you agree that you are solely responsible for any prompts and data you send to third-party APIs and for ensuring that no sensitive or regulated information is shared in violation of law or policy.  
+
+> This notice is provided for convenience only and does **not** constitute legal advice.  
+> NaBotX is licensed under the **Apache License 2.0**.  
+> See the [LICENSE.txt](./LICENSE.txt) file for the full legal text.  
 
 ---
 
@@ -43,7 +55,7 @@ The first time you launch NaBotX, you'll be prompted to configure your LLM setti
 
 ![Configuring LLM Settings](./showcase/C03.png)
 
-You can also manually configure these settings by pressing `Ctrl+Shift+P`, typing "NaBotX" and selecting **“NaBotX: Open Settings.”**
+You can also manually configure these settings by pressing `Ctrl+Shift+P`, typing **“NaBotX”** and selecting **“NaBotX: Open Settings.”**
 
 ![Accessing NaBotX Settings](./showcase/C01.png)
 
@@ -72,3 +84,4 @@ NaBotX offers multiple ways to interact:
   "preference": [
     "Anything that should be always remembered for your project"
   ]
+}
