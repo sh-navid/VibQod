@@ -69,7 +69,7 @@ NaBotX offers multiple ways to interact:
     "Anything that should be always remembered for your project"
   ]
 }
-
+```
 
 
 ---
@@ -94,4 +94,3 @@ NaBotX offers multiple ways to interact:
 > See the [LICENSE.txt](./LICENSE.txt) file for the full legal text.
 
 ---
-```
