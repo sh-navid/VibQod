@@ -7,13 +7,10 @@
     ${styles} ${scripts}
   </head>
   <body>
+    <button class="tab-button">Model: <span id="model-name">Unknown</span></button>
     <div class="tab-buttons">
-      <button class="tab-button active" onclick="locals.openTab('tab1')">
-        Assistant
-      </button>
-      <button class="tab-button" onclick="locals.openTab('tab2')">
-        Preview
-      </button>
+      <button class="tab-button active" onclick="locals.openTab('tab1')">Assistant</button>
+      <button class="tab-button" onclick="locals.openTab('tab2')">Preview</button>
     </div>
 
     <div class="container">
@@ -25,11 +22,7 @@
       <div id="tab1" class="tab-content tab1">
         <div>
           <div id="logoHolder">
-            <img
-              src="${logos/N8X.svg}"
-              alt="NaBotX Logo"
-              width="110rem"
-            />
+            <img src="${logos/N8X.svg}" alt="NaBotX Logo" width="110rem" />
             <br />
             <h3>Start to code with NaBotX</h3>
             <span>Type <kbd>/</kbd> to use commands</span>
@@ -79,20 +72,28 @@
       </div>
     </div>
 
+    <div id="modal-container"></div>
+
     <script>
-      const vscode = acquireVsCodeApi();
+      const vscode = acquireVsCodeApi()
 
-      const btnOpenCodeFile = "${btn-open-code-file.png}";
-      const btnReplace = "${btn-replace.png}";
-      const btnAppend = "${btn-append.png}";
-      const btnCopy = "${btn-copy.png}";
-      const btnDiff = "${btn-diff.png}";
-      const btnUndo = "${btn-undo.png}";
+      const btnOpenCodeFile = "${btn-open-code-file.png}"
+      const btnReplace = "${btn-replace.png}"
+      const btnAppend = "${btn-append.png}"
+      const btnCopy = "${btn-copy.png}"
+      const btnDiff = "${btn-diff.png}"
+      const btnUndo = "${btn-undo.png}"
 
-      const token = "${token}";
-      const model = "${model}";
-      const rules = "${rules}";
-      const path = "${path}";
+      const token = "${token}"
+      let model = "${model}"
+      const rules = "${rules}"
+      const path = "${path}"
+
+      modelHelper.show("model-name", model)
+      modelHelper.modal((newModel) => {
+        model = newModel
+        modelHelper.show("model-name", model)
+      })
     </script>
   </body>
 </html>

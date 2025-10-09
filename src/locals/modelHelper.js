@@ -1,4 +1,3 @@
-/*[[src/locals/modelHelper.js]]*/
 /*
  *  NaBotX – VS Code AI Assistant
  *  -------------------------------------------------------------
@@ -18,14 +17,14 @@
  */
 
 const Models = Object.freeze({
-  "google/gemma-3-27b-it": { name: "gemma-3-27b" },
-  "google/gemini-2.5-flash": { name: "gemini-2.5-flash" },
-  "google/gemini-2.0-flash-lite-001": { name: "gemini-2.0-flash-lite" },
-  "google/gemini-2.0-flash-001": { name: "gemini-2.0-flash" },
-  "google/gemini-2.5-pro-preview": { name: "gemini-2.5-pro" },
-  "openai/o3": { name: "GPT-o3" },
-  "openai/gpt-5-codex": { name: "GPT-5 Codex" },
-});
+  "google/gemma-3-27b-it": {name: "gemma-3-27b"},
+  "google/gemini-2.5-flash": {name: "gemini-2.5-flash"},
+  "google/gemini-2.0-flash-lite-001": {name: "gemini-2.0-flash-lite"},
+  "google/gemini-2.0-flash-001": {name: "gemini-2.0-flash"},
+  "google/gemini-2.5-pro-preview": {name: "gemini-2.5-pro"},
+  "openai/o3": {name: "GPT-o3"},
+  "openai/gpt-5-codex": {name: "GPT-5 Codex"},
+})
 
 // eslint-disable-next-line no-unused-vars
 const modelHelper = {
@@ -35,11 +34,7 @@ const modelHelper = {
    * @param {string} modelId     ID of the selected model.
    */
   show: (containerId, modelId) => {
-    const model = Models[modelId];
-    $("#" + containerId).text(model ? model.name : "Unknown Model");
-    if (!model) {
-      console.warn(`Model with ID "${modelId}" not found.`);
-    }
+    $("#" + containerId).text(Models[modelId].name)
   },
 
   /**
@@ -47,8 +42,18 @@ const modelHelper = {
    * @param {(selectedModelId: string) => void} callback
    */
   modal: (callback) => {
-    const modalId = "naModelSelectionModal";
-    if ($("#" + modalId).length) $("#"+modalId).remove();
+    if (typeof $ === "undefined") {
+      console.error("jQuery is not loaded. Cannot open model selection modal.")
+      return
+    }
+
+    const modalId = "naModelSelectionModal"
+    let $modal = $("#" + modalId)
+
+    // If modal already exists, remove it first to ensure clean state
+    if ($modal.length) {
+      $modal.remove()
+    }
 
     const modalHtml = `
       <div id="${modalId}" class="na-modal">
@@ -75,35 +80,55 @@ const modelHelper = {
             </ul>
           </div>
         </div>
-      </div>`;
+      </div>`
 
-    $("body").append(modalHtml);
-    const $modal = $("#" + modalId);
-    setTimeout(() => $modal.addClass("na-show"), 10);
+    // Append to the designated modal container, which should be in panel.html
+    $("#modal-container").append(modalHtml)
+    $modal = $("#" + modalId) // Re-select the newly added modal
 
+    // Ensure the modal appears with a slight delay for transition effect
+    setTimeout(() => $modal.addClass("na-show"), 10)
+
+    // Event listener for model selection
     $modal
       .find(".na-list-group-item")
-      .off("click")
-      .on("click", function () {
-        const selectedModelId = $(this).data("model-id");
-        $modal.removeClass("na-show");
-        if (typeof callback === "function") callback(selectedModelId);
-      });
+      .off("click.naModelSelect") // Use namespaced event to avoid conflicts
+      .on("click.naModelSelect", function () {
+        const selectedModelId = $(this).data("model-id")
+        $modal.removeClass("na-show")
+        if (typeof callback === "function") callback(selectedModelId)
+      })
 
-    $modal.find(".na-close-button").on("click", () => $modal.removeClass("na-show"));
-    $modal.on("click.naModalDismiss", (e) => {
-      if ($(e.target).is($modal)) $modal.removeClass("na-show");
-    });
-    $(document).on("keydown.naModalEscape", (e) => {
-      if (e.key === "Escape" && $modal.hasClass("na-show")) $modal.removeClass("na-show");
-    });
-    $modal.on("transitionend", () => {
+    // Event listener for close button
+    $modal
+      .find(".na-close-button")
+      .off("click.naModalClose")
+      .on("click.naModalClose", () => $modal.removeClass("na-show"))
+
+    // Event listener for clicking outside the modal content
+    $modal.off("click.naModalDismiss").on("click.naModalDismiss", (e) => {
+      // Check if the click target is the modal itself and not its children
+      if ($(e.target).is($modal)) $modal.removeClass("na-show")
+    })
+
+    // Event listener for escape key
+    $(document)
+      .off("keydown.naModalEscape")
+      .on("keydown.naModalEscape", (e) => {
+        if (e.key === "Escape" && $modal.hasClass("na-show")) $modal.removeClass("na-show")
+      })
+
+    // Clean up after transition ends
+    $modal.off("transitionend.naModalCleanup").on("transitionend.naModalCleanup", () => {
       if (!$modal.hasClass("na-show")) {
-        $modal.remove();
-        $(document).off("keydown.naModalEscape");
+        // Remove all namespaced event listeners from modal and document
+        $modal.find(".na-list-group-item").off("click.naModelSelect")
+        $modal.find(".na-close-button").off("click.naModalClose")
+        $modal.off("click.naModalDismiss")
+        $(document).off("keydown.naModalEscape")
+        $modal.off("transitionend.naModalCleanup")
+        $modal.remove()
       }
-    });
+    })
   },
-};
-
-export { modelHelper, Models };
+}
