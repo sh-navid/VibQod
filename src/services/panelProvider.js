@@ -72,7 +72,7 @@ class PanelProvider {
 
     const _config = {
       styles: config.styles
-        .map((x) => `<link href="${this._uri(webview, x, "styles")}" rel="stylesheet"/>`)
+        .map((x) => `<link href="${this._uri(webview, x, "src")}" rel="stylesheet"/>`)
         .join(""),
       scripts: config.scripts
         .map((x) => `<script src="${this._uri(webview, x, "src")}"></script>`)
