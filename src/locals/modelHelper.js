@@ -50,7 +50,6 @@ const modelHelper = {
     const modalId = "naModelSelectionModal"
     let $modal = $("#" + modalId)
 
-    // If modal already exists, remove it first to ensure clean state
     if ($modal.length) {
       $modal.remove()
     }
@@ -82,46 +81,37 @@ const modelHelper = {
         </div>
       </div>`
 
-    // Append to the designated modal container, which should be in panel.html
     $("#modal-container").append(modalHtml)
-    $modal = $("#" + modalId) // Re-select the newly added modal
+    $modal = $("#" + modalId)
 
-    // Ensure the modal appears with a slight delay for transition effect
     setTimeout(() => $modal.addClass("na-show"), 10)
 
-    // Event listener for model selection
     $modal
       .find(".na-list-group-item")
-      .off("click.naModelSelect") // Use namespaced event to avoid conflicts
+      .off("click.naModelSelect")
       .on("click.naModelSelect", function () {
         const selectedModelId = $(this).data("model-id")
         $modal.removeClass("na-show")
         if (typeof callback === "function") callback(selectedModelId)
       })
 
-    // Event listener for close button
     $modal
       .find(".na-close-button")
       .off("click.naModalClose")
       .on("click.naModalClose", () => $modal.removeClass("na-show"))
 
-    // Event listener for clicking outside the modal content
     $modal.off("click.naModalDismiss").on("click.naModalDismiss", (e) => {
-      // Check if the click target is the modal itself and not its children
       if ($(e.target).is($modal)) $modal.removeClass("na-show")
     })
 
-    // Event listener for escape key
     $(document)
       .off("keydown.naModalEscape")
       .on("keydown.naModalEscape", (e) => {
         if (e.key === "Escape" && $modal.hasClass("na-show")) $modal.removeClass("na-show")
       })
 
-    // Clean up after transition ends
     $modal.off("transitionend.naModalCleanup").on("transitionend.naModalCleanup", () => {
       if (!$modal.hasClass("na-show")) {
-        // Remove all namespaced event listeners from modal and document
         $modal.find(".na-list-group-item").off("click.naModelSelect")
         $modal.find(".na-close-button").off("click.naModalClose")
         $modal.off("click.naModalDismiss")

@@ -7,7 +7,9 @@
     ${styles} ${scripts}
   </head>
   <body>
-    <button class="tab-button">Model: <span id="model-name">Unknown</span></button>
+    <button class="tab-button" onclick="openModelModal()">
+      Model: <span id="model-name">Unknown</span>
+    </button>
     <div class="tab-buttons">
       <button class="tab-button active" onclick="locals.openTab('tab1')">Assistant</button>
       <button class="tab-button" onclick="locals.openTab('tab2')">Preview</button>
@@ -89,11 +91,15 @@
       const rules = "${rules}"
       const path = "${path}"
 
+      // Clean
       modelHelper.show("model-name", model)
-      modelHelper.modal((newModel) => {
-        model = newModel
-        modelHelper.show("model-name", model)
-      })
+      const openModelModal = () => {
+        modelHelper.modal((newModel) => {
+          model = newModel
+          modelHelper.show("model-name", model)
+        })
+      }
+      openModelModal()
     </script>
   </body>
 </html>
