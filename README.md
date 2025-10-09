@@ -35,11 +35,16 @@ _NaBotX_ is your AI-Powered **VS Code Assistant eXtension**
 
 The first time you launch NaBotX, you'll be prompted to configure your LLM settings.
 
-![Configuring LLM Settings](./showcase/C03.png)
+<div align="center">
+  <img src="./showcase/C03.png" alt="Configuring LLM Settings" />
+</div>
 
 You can also manually configure these settings by pressing `Ctrl+Shift+P`, typing **“NaBotX”** and selecting **“NaBotX: Open Settings.”**
 
-![Accessing NaBotX Settings](./showcase/C01.png)
+<div align="center">
+  <img src="./showcase/C01.png" alt="Accessing NaBotX Settings" />
+</div>
+
 
 ---
 
