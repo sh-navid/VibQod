@@ -94,7 +94,7 @@
       // Clean
       modelHelper.show("model-name", model)
       const openModelModal = () => {
-        modelHelper.modal((newModel) => {
+        modelHelper.modal("modal-container", (newModel) => {
           model = newModel
           modelHelper.show("model-name", model)
         })

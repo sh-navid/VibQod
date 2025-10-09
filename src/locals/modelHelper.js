@@ -16,6 +16,7 @@
  *  -------------------------------------------------------------
  */
 
+//Clean
 const Models = Object.freeze({
   "google/gemma-3-27b-it": {name: "gemma-3-27b"},
   "google/gemini-2.5-flash": {name: "gemini-2.5-flash"},
@@ -41,7 +42,7 @@ const modelHelper = {
    * Opens a modal dialog that lets the user pick a model.
    * @param {(selectedModelId: string) => void} callback
    */
-  modal: (callback) => {
+  modal: (containerId,callback) => {
     if (typeof $ === "undefined") {
       console.error("jQuery is not loaded. Cannot open model selection modal.")
       return
@@ -81,7 +82,7 @@ const modelHelper = {
         </div>
       </div>`
 
-    $("#modal-container").append(modalHtml)
+    $("#"+containerId).append(modalHtml)
     $modal = $("#" + modalId)
 
     setTimeout(() => $modal.addClass("na-show"), 10)
