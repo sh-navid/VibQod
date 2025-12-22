@@ -1,4 +1,4 @@
-# NaBotX
+# NaBotX now is Rebranding to VibQod
 
 _NaBotX_ is your AI-Powered **VS Code Assistant eXtension**
 
