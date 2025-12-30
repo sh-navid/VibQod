@@ -1,0 +1,47 @@
+/* General Styles */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  /* Include padding and border in the element's total width and height */
+}
+
+body {
+  font-family: sans-serif;
+  /* Or your preferred font */
+  background-color: #121212;
+  /* Dark background */
+  color: #fff;
+  /* Light text color */
+  overflow-y: scroll;
+  /* Enables vertical scroll */
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 4px;
+  /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #222;
+  /* Color of the scrollbar track (the area behind the scrollbar) */
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  /* Color of the scrollbar thumb (the draggable part) */
+  border-radius: 1rem;
+  /* Rounded corners for the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+  /* Color of the scrollbar thumb on hover */
+}
+
+::-webkit-scrollbar-corner {
+  background: #121212;
+  /* Color of the scrollbar corner (when both scrollbars are present) */
+}
