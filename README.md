@@ -1,7 +1,7 @@
 /* [[README.md]] */
 # EldenDev/VibQod
 
-VibQod is your AI-Powered **Vibe coding Extension**
+VibQod is your AI-Powered **Vibe coding** Application.
 
 <div align="center">
   <picture width="100%">
