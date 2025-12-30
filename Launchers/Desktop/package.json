@@ -1,0 +1,17 @@
+{
+  "name": "VibQod",
+  "version": "1.0.0",
+  "description": "Opens localhost:9090 in Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . electron-localhost --platform=darwin --arch=x64 --out=dist --overwrite --icon=./assets/icon.icns"
+  },
+  "keywords": [],
+  "author": "sh-navid",
+  "devDependencies": {
+    "electron": "^39.1.1",
+    "electron-packager": "^17.1.2"
+  },
+  "dependencies": {}
+}
