@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { IconButton } from './IconButton';
+import useAiProvider from '../hooks/useAiProvider';
 import useAi from '../hooks/useAi';
 import { useClearAiHistory } from '../services/aiService';
+import AiProviderModal from './AiProviderModal';
+
+
 
 /* ──────────────────────────  STYLES  ────────────────────────── */
 const BottomBarContainer = styled.div`
@@ -50,11 +54,17 @@ const SendButton = styled(IconButton)`
   ${baseHover('rgba(25, 135, 84, 0.2)')}
 `;
 
+const ProviderButton = styled(IconButton)`
+  color: #fff;
+  ${baseHover('rgba(100, 100, 255, 0.2)')} // Example color, adjust as needed
+`;
+
 /* ──────────────────────────  COMPONENT  ────────────────────────── */
 const BottomBar = () => {
   const [prompt, setPrompt] = useState('');
   const { sendPrompt } = useAi();
   const { mutateAsync: clearHistory, isLoading: isClearing } = useClearAiHistory();
+  const [isModalOpen, setIsModalOpen] = useState(false);  // State for the modal
 
   const handleInputChange = (e) => setPrompt(e.target.value);
 
@@ -76,6 +86,9 @@ const BottomBar = () => {
       e.preventDefault();      // prevent newline
     }
   };
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <BottomBarContainer>
@@ -99,9 +112,15 @@ const BottomBar = () => {
         )}
       </ClearButton>
 
+      <ProviderButton href="#" aria-label="Manage Providers" onClick={openModal}>
+        <span className="material-icons">settings</span>
+      </ProviderButton>
+
       <SendButton href="#" aria-label="Send" onClick={handleSendClick}>
         <span className="material-icons">send</span>
       </SendButton>
+      <AiProviderModal isOpen={isModalOpen} onClose={closeModal} />
+      {/*  modal here */}
     </BottomBarContainer>
   );
 };
