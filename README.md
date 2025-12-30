@@ -1,4 +1,3 @@
-/* [[README.md]] */
 # EldenDev/VibQod
 
 VibQod is your AI-Powered **Vibe coding** Application.
@@ -22,3 +21,12 @@ VibQod is your AI-Powered **Vibe coding** Application.
 5.  **Data Responsibility:** You are solely responsible for prompts and data sent to third-party APIs.
 
 > VibQod is licensed under the **Apache License 2.0**. See [LICENSE.txt](./LICENSE.txt) for details.
+
+---
+
+## Attribution
+
+This project uses the following open-source resources:
+
+*   **Google Material Icons:** Licensed under the Apache License 2.0. ([https://fonts.google.com/icons](https://fonts.google.com/icons))
+*   **Roboto Font:** Licensed under the Apache License 2.0. ([https://fonts.google.com/specimen/Roboto](https://fonts.google.com/specimen/Roboto))
