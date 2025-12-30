@@ -1,6 +1,8 @@
-# EldenDev/VibQod
+# EldenDev > VibQod
 
 VibQod is your AI-Powered **Vibe coding** Application.
+
+***NOTICE: This is the second major version; rebranded and is under heavy reconstuction***
 
 <div align="center">
   <picture width="100%">
