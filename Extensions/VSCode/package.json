@@ -1,0 +1,57 @@
+{
+  "name": "vibqod-vscode-addin",
+  "displayName": "VibQod",
+  "description": "Adds a context menu item and WebView to interact with VibQod.",
+  "version": "2.0.18",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onView:vibqodView"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "vibqod-vscode-addin.addToVibQod", "title": "Add to VibQod" },
+      { "command": "vibqod-vscode-addin.openVibqodView", "title": "Open VibQod View" }
+    ],
+    "menus": {
+      "explorer/context": [
+        { "command": "vibqod-vscode-addin.addToVibQod", "group": "navigation" }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vibqodActivityBar",
+          "title": "VibQod",
+          "icon": "assets/Logo.png"
+        }
+      ]
+    },
+    "views": {
+      "vibqodActivityBar": [
+        {
+          "id": "vibqodView",
+          "name": "[Extension]",
+          "icon": "assets/Logo.png",
+          "type": "webview"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sh-navid/VibQod"
+  },
+  "publisher": "sh-navid",
+  "files": [
+    "assets/**/*",
+    "src/**/*",
+    "media/*"
+  ]
+}
