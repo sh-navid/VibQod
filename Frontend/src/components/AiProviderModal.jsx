@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import  useAiProvider  from '../hooks/useAiProvider.js';
+import { ThemeContext, themes } from './ThemeContext';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -8,7 +9,7 @@ const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${props => props.theme.modalBackground};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +17,8 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.modalContentBackground};
+  color: ${props => props.theme.modalText};
   padding: 20px;
   border-radius: 8px;
   width: 80%;
@@ -33,6 +35,7 @@ const CloseButton = styled.button`
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+  color: ${props => props.theme.modalText};
 `;
 
 const Input = styled.input`
@@ -41,11 +44,13 @@ const Input = styled.input`
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  color: ${props => props.theme.inputText};
+  background-color: ${props => props.theme.inputBackground};
 `;
 
 const Button = styled.button`
-  background-color: #007bff;
-  color: white;
+  background-color: ${props => props.theme.modalButtonBackground};
+  color: ${props => props.theme.modalButtonText};
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -67,6 +72,8 @@ const AiProviderModal = ({ isOpen, onClose }) => {
     displayName: '',
   });
 
+  const { theme } = useContext(ThemeContext);
+
   const { addAiProvider, aiProviders, isLoadingProviders, isErrorProviders, providersError, refetchProviders, isAddingProvider, isProviderAdded, isAddProviderError, addProviderError  } = useAiProvider();
 
   const handleInputChange = (e) => {
@@ -84,9 +91,9 @@ const AiProviderModal = ({ isOpen, onClose }) => {
   }
 
   return (
-    <ModalOverlay>
-      <ModalContent>
-        <CloseButton onClick={onClose}>&times;</CloseButton>
+    <ModalOverlay theme={themes[theme]}>
+      <ModalContent theme={themes[theme]}>
+        <CloseButton onClick={onClose} theme={themes[theme]}>&times;</CloseButton>
         <h2>Manage AI Providers</h2>
 
         <div>
@@ -97,6 +104,7 @@ const AiProviderModal = ({ isOpen, onClose }) => {
             placeholder="Display Name"
             value={providerData.displayName}
             onChange={handleInputChange}
+            theme={themes[theme]}
           />
           <Input
             type="text"
@@ -104,6 +112,7 @@ const AiProviderModal = ({ isOpen, onClose }) => {
             placeholder="API Key"
             value={providerData.apiKey}
             onChange={handleInputChange}
+            theme={themes[theme]}
           />
           <Input
             type="text"
@@ -111,6 +120,7 @@ const AiProviderModal = ({ isOpen, onClose }) => {
             placeholder="Base URL"
             value={providerData.baseUrl}
             onChange={handleInputChange}
+            theme={themes[theme]}
           />
           <Input
             type="text"
@@ -118,8 +128,9 @@ const AiProviderModal = ({ isOpen, onClose }) => {
             placeholder="Model"
             value={providerData.model}
             onChange={handleInputChange}
+            theme={themes[theme]}
           />
-          <Button onClick={handleAddProvider} disabled={isAddingProvider}>
+          <Button onClick={handleAddProvider} disabled={isAddingProvider} theme={themes[theme]}>
           {isAddingProvider ? 'Adding...' : 'Add Provider'}
           </Button>
           {(isAddProviderError && addProviderError) && <p style={{ color: 'red' }}>Error adding provider: {addProviderError.message}</p>}

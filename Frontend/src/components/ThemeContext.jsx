@@ -12,6 +12,11 @@ export const themes = {
     inputText: '#333',
     userMessageBackground: '#dcf8c6',
     botMessageBackground: '#eee',
+    modalBackground: 'rgba(0, 0, 0, 0.5)',
+    modalContentBackground: 'white',
+    modalText: '#333',
+    modalButtonBackground: '#007bff',
+    modalButtonText: 'white',
   },
   dark: {
     body: '#121212',
@@ -24,6 +29,11 @@ export const themes = {
     inputText: '#fff',
     userMessageBackground: '#444',
     botMessageBackground: '#333',
+    modalBackground: 'rgba(0, 0, 0, 0.5)',
+    modalContentBackground: '#181818ff',
+    modalText: '#fff',
+    modalButtonBackground: '#007bff',
+    modalButtonText: 'white',
   },
 };
 
