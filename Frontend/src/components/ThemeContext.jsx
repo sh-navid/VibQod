@@ -15,8 +15,8 @@ export const themes = {
     modalBackground: 'rgba(0, 0, 0, 0.5)',
     modalContentBackground: 'white',
     modalText: '#333',
-    modalButtonBackground: '#007bff',
-    modalButtonText: 'white',
+    modalButtonBackground: 'transparent',
+    modalButtonText: '#007bff',
   },
   dark: {
     body: '#121212',
@@ -32,8 +32,8 @@ export const themes = {
     modalBackground: 'rgba(0, 0, 0, 0.5)',
     modalContentBackground: '#181818ff',
     modalText: '#fff',
-    modalButtonBackground: '#007bff',
-    modalButtonText: 'white',
+    modalButtonBackground: 'transparent',
+    modalButtonText: '#007bff',
   },
 };
 

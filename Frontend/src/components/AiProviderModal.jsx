@@ -32,28 +32,28 @@ const ModalContent = styled.div`
 const CloseButton = styled.button`
   color: ${props => props.theme.modalText};
   position: absolute;
-  font-size: 2rem; // Larger close button
+  font-size: 2rem; 
   background: none;
   cursor: pointer;
   border: none;
   right: 15px;
   top: 15px;
-  padding: 0; // Remove default button padding
-  line-height: 1; // Adjust line-height
+  padding: 0; 
+  line-height: 1; 
 `;
 
 const Button = styled.button`
   background-color: ${props => props.theme.modalButtonBackground};
   color: ${props => props.theme.modalButtonText};
-  border-radius: 6px; // Rounded corners
+  border-radius: 6px; 
   margin-right: 15px;
-  padding: 12px 20px;
+  padding: 4px;
   cursor: pointer;
   border: none;
   font-size: 1rem;
-  transition: background-color 0.2s ease; // Add a hover effect
+  transition: background-color 0.2s ease; 
   &:hover {
-    background-color: ${props => props.theme.modalButtonHover}; // Define hover color in theme
+    background-color: ${props => props.theme.modalButtonHover};
   }
 `;
 
@@ -127,6 +127,16 @@ const DefaultProviderSection = styled.div`
     align-items: center;
 `;
 
+const Icon = styled.i`
+  font-size: 1.2rem;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  &:hover {
+    color: ${props => props.theme.iconHover};
+  }
+`;
+
 const AiProviderModal = ({ isOpen, onClose }) => {
   const [providerData, setProviderData] = useState({
     apiKey: '',
@@ -195,11 +205,11 @@ const AiProviderModal = ({ isOpen, onClose }) => {
         <CloseButton onClick={onClose} theme={themes[theme]}>
           &times;
         </CloseButton>
-        <h2>Manage AI Providers</h2>
+        <h3>AI Providers</h3>
 
-        <AddButton onClick={() => setShowAddProviderForm(!showAddProviderForm)} theme={themes[theme]} showText={!showAddProviderForm}>
-          {showAddProviderForm ? 'Cancel Adding Provider' : ''}
-        </AddButton>
+        <Button onClick={() => setShowAddProviderForm(!showAddProviderForm)} theme={themes[theme]} showText={!showAddProviderForm}>
+          {showAddProviderForm ? <i className="material-icons">cancel</i> : <i className="material-icons">add</i>}
+        </Button>
 
         {showAddProviderForm && (
           <AddProviderSection theme={themes[theme]}>
@@ -271,10 +281,10 @@ const AiProviderModal = ({ isOpen, onClose }) => {
                 {provider.displayName}
                 <div>
                   <SetDefaultButton onClick={() => handleSetDefaultProvider(provider.id)} theme={themes[theme]} disabled={isSettingAsDefault}>
-                    {isSettingAsDefault ? 'Setting...' : 'Set Default'}
+                    {isSettingAsDefault ? 'Setting...' : <i className="material-icons">star</i>}
                   </SetDefaultButton>
                   <DeleteButton onClick={() => handleDeleteProvider(provider.id)} theme={themes[theme]} disabled={isRemovingProvider && selectedProviderIdToDelete === provider.id}>
-                    {isRemovingProvider && selectedProviderIdToDelete === provider.id ? 'Deleting...' : 'Delete'}
+                    {isRemovingProvider && selectedProviderIdToDelete === provider.id ? 'Deleting...' : <i className="material-icons">delete</i>}
                   </DeleteButton>
                 </div>
               </ProviderItem>
