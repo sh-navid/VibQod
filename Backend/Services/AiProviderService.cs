@@ -65,19 +65,20 @@ namespace Backend.Services
 
         public async Task<bool> SetDefaultAiProviderAsync(int id)
         {
+            // Check if record with this id exists
+            if (!await _context.AiProviders.AnyAsync(p => p.Id == id))
+            {
+                return false;
+            }
+
             // Reset existing defaults
-            var existingDefault = await _context.AiProviders.FirstOrDefaultAsync(p => p.IsDefault);
-            if (existingDefault != null)
+            var existingDefaults = await _context.AiProviders.Where(p => p.IsDefault).ToListAsync();
+            foreach (var existingDefault in existingDefaults)
             {
                 existingDefault.IsDefault = false;
             }
 
             var newDefault = await _context.AiProviders.FirstOrDefaultAsync(p => p.Id == id);
-            if (newDefault == null)
-            {
-                return false; // Provider not found
-            }
-
             newDefault.IsDefault = true;
             await _context.SaveChangesAsync();
             return true;
