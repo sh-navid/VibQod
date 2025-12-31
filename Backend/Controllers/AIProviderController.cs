@@ -68,5 +68,17 @@ namespace Backend.Controllers
             }
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAiProvider(int id)
+        {
+            var success = await _aiProviderService.DeleteAiProviderAsync(id);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

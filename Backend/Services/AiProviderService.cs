@@ -12,6 +12,7 @@ namespace Backend.Services
         Task<AiProviderDto?> GetAiProviderByIdAsync(int id);
         Task<AiProviderDto?> GetDefaultAiProviderAsync();
         Task<bool> SetDefaultAiProviderAsync(int id);
+        Task<bool> DeleteAiProviderAsync(int id);
     }
 
     public class AiProviderService(ApplicationDbContext context) : IAiProviderService
@@ -68,6 +69,20 @@ namespace Backend.Services
             }
 
             newDefault.IsDefault = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteAiProviderAsync(int id)
+        {
+            var provider = await _context.AiProviders.FindAsync(id);
+
+            if (provider == null)
+            {
+                return false; // Provider not found
+            }
+
+            _context.AiProviders.Remove(provider);
             await _context.SaveChangesAsync();
             return true;
         }
