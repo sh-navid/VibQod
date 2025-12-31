@@ -112,6 +112,13 @@ const ProviderItem = styled.div`
   align-items: center;
 `;
 
+const DefaultProviderSection = styled.div`
+    border: 1px solid ${props => props.theme.borderColor};
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+`;
+
 const AiProviderModal = ({ isOpen, onClose }) => {
   const [providerData, setProviderData] = useState({
     apiKey: '',
@@ -138,6 +145,10 @@ const AiProviderModal = ({ isOpen, onClose }) => {
     isProviderRemoved,
     isRemoveProviderError,
     removeProviderError,
+    defaultAiProvider,
+    isLoadingDefaultProvider,
+    isErrorDefaultProvider,
+    defaultProviderError,
   } = useAiProvider();
 
   const handleInputChange = (e) => {
@@ -216,6 +227,17 @@ const AiProviderModal = ({ isOpen, onClose }) => {
             {isProviderAdded && <p style={{ color: 'green' }}>Provider added successfully!</p>}
           </AddProviderSection>
         )}
+
+        <DefaultProviderSection theme={themes[theme]}>
+          <h3>Default Provider</h3>
+          {isLoadingDefaultProvider && <p>Loading default provider...</p>}
+          {isErrorDefaultProvider && <p style={{ color: 'red' }}>Error loading default provider: {defaultProviderError.message}</p>}
+          {defaultAiProvider && (
+            <p>
+              Display Name: {defaultAiProvider.displayName}
+            </p>
+          )}
+        </DefaultProviderSection>
 
         <ProviderList show={!showAddProviderForm} theme={themes[theme]}>
           <h3>
