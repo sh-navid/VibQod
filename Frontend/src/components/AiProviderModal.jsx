@@ -1,75 +1,75 @@
-import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
 import useAiProvider from '../hooks/useAiProvider.js';
 import { ThemeContext, themes } from './ThemeContext';
+import { useState, useContext } from 'react';
+import styled from 'styled-components';
 
 const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background-color: ${props => props.theme.modalBackground};
-  display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
   z-index: 1000;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
 `;
 
 const ModalContent = styled.div`
   background-color: ${props => props.theme.modalContentBackground};
-  color: ${props => props.theme.modalText};
-  padding: 20px;
-  border-radius: 8px;
-  width: 80%;
-  max-width: 600px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: ${props => props.theme.modalText};
+  border-radius: 8px;
   position: relative;
+  max-width: 600px;
+  padding: 20px;
+  width: 80%;
 `;
 
 const CloseButton = styled.button`
+color: ${props => props.theme.modalText};
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
   font-size: 1.5rem;
+  background: none;
   cursor: pointer;
-  color: ${props => props.theme.modalText};
+  border: none;
+  right: 10px;
+  top: 10px;
 `;
 
 const Button = styled.button`
   background-color: ${props => props.theme.modalButtonBackground};
   color: ${props => props.theme.modalButtonText};
-  padding: 10px 15px;
-  border: none;
   border-radius: 4px;
-  cursor: pointer;
   margin-right: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  border: none;
 `;
 
 const ProviderList = styled.div`
-  margin-top: 20px;
+  display: ${props => (props.show ? 'block' : 'none')};
   border-top: 1px solid #eee;
   padding-top: 10px;
-  display: ${props => (props.show ? 'block' : 'none')};
+  margin-top: 20px;
 `;
 
 const AddProviderSection = styled.div`
-  margin-bottom: 10px;
   border: 1px solid ${props => props.theme.borderColor};
-  padding: 10px;
+  margin-bottom: 10px;
   border-radius: 4px;
+  padding: 10px;
 `;
 
 const Input = styled.input`
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  color: ${props => props.theme.inputText};
   background-color: ${props => props.theme.inputBackground};
+  color: ${props => props.theme.inputText};
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
 `;
 
 const AiProviderModal = ({ isOpen, onClose }) => {
