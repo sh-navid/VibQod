@@ -14,5 +14,6 @@ namespace Backend.Models
         public required string Model { get; set; }
         [Required]
         public required string DisplayName { get; set; }
+        public bool IsDefault { get; set; } = false;
     }
 }

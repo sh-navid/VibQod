@@ -10,6 +10,8 @@ namespace Backend.Services
         Task<AiProviderModel?> CreateAiProviderAsync(AiProviderModel model);
         Task<IEnumerable<AiProviderDto>> GetAllAiProvidersAsync();
         Task<AiProviderModel?> GetAiProviderByIdAsync(int id);
+        Task<AiProviderModel?> GetDefaultAiProviderAsync();
+        Task<bool> SetDefaultAiProviderAsync(int id);
     }
 
     public class AiProviderService(ApplicationDbContext context) : IAiProviderService
@@ -35,6 +37,31 @@ namespace Backend.Services
         public async Task<AiProviderModel?> GetAiProviderByIdAsync(int id)
         {
             return await _context.AiProviders.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<AiProviderModel?> GetDefaultAiProviderAsync()
+        {
+            return await _context.AiProviders.FirstOrDefaultAsync(p => p.IsDefault);
+        }
+
+        public async Task<bool> SetDefaultAiProviderAsync(int id)
+        {
+            // Reset existing defaults
+            var existingDefault = await _context.AiProviders.FirstOrDefaultAsync(p => p.IsDefault);
+            if (existingDefault != null)
+            {
+                existingDefault.IsDefault = false;
+            }
+
+            var newDefault = await _context.AiProviders.FirstOrDefaultAsync(p => p.Id == id);
+            if (newDefault == null)
+            {
+                return false; // Provider not found
+            }
+
+            newDefault.IsDefault = true;
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

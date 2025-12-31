@@ -46,5 +46,27 @@ namespace Backend.Controllers
             }
             return Ok(provider);
         }
+
+        [HttpGet("default")]
+        public async Task<IActionResult> GetDefaultAiProvider()
+        {
+            var provider = await _aiProviderService.GetDefaultAiProviderAsync();
+            if (provider == null)
+            {
+                return NotFound();
+            }
+            return Ok(provider);
+        }
+
+        [HttpPut("default/{id}")]
+        public async Task<IActionResult> SetDefaultAiProvider(int id)
+        {
+            var success = await _aiProviderService.SetDefaultAiProviderAsync(id);
+            if (!success)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }
