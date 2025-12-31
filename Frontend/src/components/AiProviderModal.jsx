@@ -32,26 +32,26 @@ const ModalContent = styled.div`
 const CloseButton = styled.button`
   color: ${props => props.theme.modalText};
   position: absolute;
-  font-size: 2rem; 
+  font-size: 2rem;
   background: none;
   cursor: pointer;
   border: none;
   right: 15px;
   top: 15px;
-  padding: 0; 
-  line-height: 1; 
+  padding: 0;
+  line-height: 1;
 `;
 
 const Button = styled.button`
   background-color: ${props => props.theme.modalButtonBackground};
   color: ${props => props.theme.modalButtonText};
-  border-radius: 6px; 
+  border-radius: 6px;
   margin-right: 15px;
   padding: 4px;
   cursor: pointer;
   border: none;
   font-size: 1rem;
-  transition: background-color 0.2s ease; 
+  transition: background-color 0.2s ease;
   &:hover {
     background-color: ${props => props.theme.modalButtonHover};
   }
@@ -255,21 +255,6 @@ const AiProviderModal = ({ isOpen, onClose }) => {
           </AddProviderSection>
         )}
 
-        {!showAddProviderForm && (
-          <DefaultProviderSection theme={themes[theme]}>
-            <div>
-              Default Provider:
-            </div>
-            <div>
-              {isLoadingDefaultProvider && <p>Loading...</p>}
-              {isErrorDefaultProvider && <p style={{ color: 'red' }}>Error: {defaultProviderError.message}</p>}
-              {defaultAiProvider && (
-                <span>{defaultAiProvider.displayName}</span>
-              )}
-            </div>
-          </DefaultProviderSection>
-        )}
-
         <ProviderList show={!showAddProviderForm} theme={themes[theme]}>
           {isErrorProviders && (
             <p style={{ color: 'red' }}>Error loading providers: {providersError.message}</p>
@@ -281,7 +266,7 @@ const AiProviderModal = ({ isOpen, onClose }) => {
                 {provider.displayName}
                 <div>
                   <SetDefaultButton onClick={() => handleSetDefaultProvider(provider.id)} theme={themes[theme]} disabled={isSettingAsDefault}>
-                    {isSettingAsDefault ? 'Setting...' : <i className="material-icons">star</i>}
+                    {isSettingAsDefault ? 'Setting...' : <i className="material-icons">{defaultAiProvider && defaultAiProvider.id === provider.id ? "star" : "star_border"}</i>}
                   </SetDefaultButton>
                   <DeleteButton onClick={() => handleDeleteProvider(provider.id)} theme={themes[theme]} disabled={isRemovingProvider && selectedProviderIdToDelete === provider.id}>
                     {isRemovingProvider && selectedProviderIdToDelete === provider.id ? 'Deleting...' : <i className="material-icons">delete</i>}
