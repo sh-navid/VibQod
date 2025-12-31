@@ -4,7 +4,7 @@ import { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 const ModalOverlay = styled.div`
-  background-color: ${props => props.theme.modalBackground};
+  background-color: rgba(0, 0, 0, 0.6); // Semi-transparent background
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -18,58 +18,87 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   background-color: ${props => props.theme.modalContentBackground};
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); // Increased shadow
   color: ${props => props.theme.modalText};
-  border-radius: 8px;
+  border-radius: 12px; // Rounded corners
   position: relative;
-  max-width: 600px;
-  padding: 20px;
-  width: 80%;
+  max-width: 700px; // Wider modal
+  width: 90%; // Responsive width
+  padding: 30px; // More padding
+  overflow-y: auto; // Add scroll if content overflows
+  max-height: 80vh; // Set a maximum height
 `;
 
 const CloseButton = styled.button`
-color: ${props => props.theme.modalText};
+  color: ${props => props.theme.modalText};
   position: absolute;
-  font-size: 1.5rem;
+  font-size: 2rem; // Larger close button
   background: none;
   cursor: pointer;
   border: none;
-  right: 10px;
-  top: 10px;
+  right: 15px;
+  top: 15px;
+  padding: 0; // Remove default button padding
+  line-height: 1; // Adjust line-height
 `;
 
 const Button = styled.button`
   background-color: ${props => props.theme.modalButtonBackground};
   color: ${props => props.theme.modalButtonText};
-  border-radius: 4px;
-  margin-right: 10px;
-  padding: 10px 15px;
+  border-radius: 6px; // Rounded corners
+  margin-right: 15px;
+  padding: 12px 20px;
   cursor: pointer;
   border: none;
+  font-size: 1rem;
+  transition: background-color 0.2s ease; // Add a hover effect
+  &:hover {
+    background-color: ${props => props.theme.modalButtonHover}; // Define hover color in theme
+  }
+`;
+
+const AddButton = styled(Button)`
+  &:before {
+    content: '+ ';
+  }
+  &:after {
+     content: ${props => props.showText ? '"Add New Provider" ' : ''};  
+  }
 `;
 
 const ProviderList = styled.div`
   display: ${props => (props.show ? 'block' : 'none')};
-  border-top: 1px solid #eee;
-  padding-top: 10px;
-  margin-top: 20px;
+  border-top: 1px solid ${props => props.theme.borderColor};
+  padding-top: 20px;
+  margin-top: 30px;
+  overflow-y: auto; // Add a scroll if the provider list is long
+  max-height: 300px; // Set a maximum height for the provider list
 `;
 
 const AddProviderSection = styled.div`
   border: 1px solid ${props => props.theme.borderColor};
-  margin-bottom: 10px;
-  border-radius: 4px;
-  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px; // Rounded corners
+  padding: 20px;
 `;
 
 const Input = styled.input`
   background-color: ${props => props.theme.inputBackground};
   color: ${props => props.theme.inputText};
   border: 1px solid #ccc;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 6px; // Rounded corners
+  padding: 12px;
   width: 100%;
+  font-size: 1rem;
+`;
+
+const ProviderItem = styled.div`
+  background-color: ${props => props.theme.listItemBackground};
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid ${props => props.theme.borderColor};
 `;
 
 const AiProviderModal = ({ isOpen, onClose }) => {
@@ -116,9 +145,9 @@ const AiProviderModal = ({ isOpen, onClose }) => {
         </CloseButton>
         <h2>Manage AI Providers</h2>
 
-        <Button onClick={() => setShowAddProviderForm(!showAddProviderForm)} theme={themes[theme]}>
-          {showAddProviderForm ? 'Cancel Adding Provider' : 'Add New Provider'}
-        </Button>
+        <AddButton onClick={() => setShowAddProviderForm(!showAddProviderForm)} theme={themes[theme]} showText={!showAddProviderForm}>
+          {showAddProviderForm ? 'Cancel Adding Provider' : ''}
+        </AddButton>
 
         {showAddProviderForm && (
           <AddProviderSection theme={themes[theme]}>
@@ -165,7 +194,7 @@ const AiProviderModal = ({ isOpen, onClose }) => {
           </AddProviderSection>
         )}
 
-        <ProviderList show={!showAddProviderForm}>
+        <ProviderList show={!showAddProviderForm} theme={themes[theme]}>
           <h3>
             Existing Providers ({isLoadingProviders ? 'Loading...' : ''})
           </h3>
@@ -175,7 +204,9 @@ const AiProviderModal = ({ isOpen, onClose }) => {
           {aiProviders && aiProviders.length === 0 && <p>No providers configured.</p>}
           {aiProviders &&
             aiProviders.map((provider) => (
-              <div key={provider.id}>{provider.displayName}</div>
+              <ProviderItem key={provider.id} theme={themes[theme]}>
+                {provider.displayName}
+              </ProviderItem>
             ))}
         </ProviderList>
       </ModalContent>
