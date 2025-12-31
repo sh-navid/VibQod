@@ -26,6 +26,7 @@ const useAiProvider = () => {
         mutationFn: createAiProvider,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['aiProviders'] }); // Invalidate and refetch
+            refetchDefaultProvider();
         },
         onError: (err) => {
             console.error('Failed to add AI provider:', err);
@@ -37,6 +38,7 @@ const useAiProvider = () => {
         mutationFn: deleteAiProvider,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['aiProviders'] }); // Invalidate and refetch
+            refetchDefaultProvider();
         },
         onError: (err) => {
             console.error('Failed to delete AI provider:', err);
@@ -55,7 +57,7 @@ const useAiProvider = () => {
         mutationFn: setDefaultAiProvider,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['aiProviders','defaultAiProvider'] }); // Invalidate and refetch
-            refetchDefaultProvider(); // Refetch here
+            refetchDefaultProvider();
         },
         onError: (err) => {
             console.error('Failed to set AI provider as default:', err);
