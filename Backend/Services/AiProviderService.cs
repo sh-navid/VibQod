@@ -9,8 +9,8 @@ namespace Backend.Services
     {
         Task<AiProviderModel?> CreateAiProviderAsync(AiProviderModel model);
         Task<IEnumerable<AiProviderDto>> GetAllAiProvidersAsync();
-        Task<AiProviderModel?> GetAiProviderByIdAsync(int id);
-        Task<AiProviderModel?> GetDefaultAiProviderAsync();
+        Task<AiProviderDto?> GetAiProviderByIdAsync(int id);
+        Task<AiProviderDto?> GetDefaultAiProviderAsync();
         Task<bool> SetDefaultAiProviderAsync(int id);
     }
 
@@ -34,14 +34,22 @@ namespace Backend.Services
             }).ToListAsync();
         }
 
-        public async Task<AiProviderModel?> GetAiProviderByIdAsync(int id)
+        public async Task<AiProviderDto?> GetAiProviderByIdAsync(int id)
         {
-            return await _context.AiProviders.FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.AiProviders.Where(p => p.Id == id).Select(p => new AiProviderDto
+            {
+                Id = p.Id,
+                DisplayName = p.DisplayName
+            }).FirstOrDefaultAsync();
         }
 
-        public async Task<AiProviderModel?> GetDefaultAiProviderAsync()
+        public async Task<AiProviderDto?> GetDefaultAiProviderAsync()
         {
-            return await _context.AiProviders.FirstOrDefaultAsync(p => p.IsDefault);
+            return await _context.AiProviders.Where(p => p.IsDefault).Select(p => new AiProviderDto
+            {
+                Id = p.Id,
+                DisplayName = p.DisplayName
+            }).FirstOrDefaultAsync();
         }
 
         public async Task<bool> SetDefaultAiProviderAsync(int id)
