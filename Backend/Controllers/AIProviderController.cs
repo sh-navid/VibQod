@@ -36,8 +36,8 @@ namespace Backend.Controllers
         }
 
         // TODO: Think about this; Do we have to expose this
-        // [HttpGet("{id}")]
-        private async Task<IActionResult> GetAiProviderById(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAiProviderById(int id)
         {
             var provider = await _aiProviderService.GetAiProviderByIdAsync(id);
             if (provider == null)
