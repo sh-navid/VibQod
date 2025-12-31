@@ -21,6 +21,16 @@ namespace Backend.Services
 
         public async Task<AiProviderModel?> CreateAiProviderAsync(AiProviderModel model)
         {
+            // If this is the first provider, set it as default
+            if (!_context.AiProviders.Any())
+            {
+                model.IsDefault = true;
+            }
+            else
+            {
+                model.IsDefault = false;
+            }
+
             _context.AiProviders.Add(model);
             await _context.SaveChangesAsync();
             return model;
