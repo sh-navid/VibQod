@@ -65,12 +65,17 @@ const DeleteButton = styled(Button)`
   }
 `;
 
+const SetDefaultButton = styled(Button)`
+  background-color: ${props => props.theme.defaultButtonBackground};
+  color: ${props => props.theme.defaultButtonText};
+  &:hover {
+    background-color: ${props => props.theme.defaultButtonHover};
+  }
+`;
+
 const AddButton = styled(Button)`
   &:before {
-    content: '+ ';
-  }
-  &:after {
-     content: ${props => props.showText ? '"Add New Provider" ' : ''};  
+    content: '+';
   }
 `;
 
@@ -117,6 +122,9 @@ const DefaultProviderSection = styled.div`
     margin: 20px 0;
     padding: 20px;
     border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const AiProviderModal = ({ isOpen, onClose }) => {
@@ -149,6 +157,12 @@ const AiProviderModal = ({ isOpen, onClose }) => {
     isLoadingDefaultProvider,
     isErrorDefaultProvider,
     defaultProviderError,
+    getDefaultAiProviderById,
+    setAsDefaultAiProvider,
+    isSettingAsDefault,
+    isSetAsDefaultSuccess,
+    isSetAsDefaultError,
+    setAsDefaultError
   } = useAiProvider();
 
   const handleInputChange = (e) => {
@@ -165,6 +179,10 @@ const AiProviderModal = ({ isOpen, onClose }) => {
     setSelectedProviderIdToDelete(id);
     await removeAiProvider(id);
     setSelectedProviderIdToDelete(null);
+  };
+
+  const handleSetDefaultProvider = async (id) => {
+    await setAsDefaultAiProvider(id);
   };
 
   if (!isOpen) {
@@ -185,7 +203,6 @@ const AiProviderModal = ({ isOpen, onClose }) => {
 
         {showAddProviderForm && (
           <AddProviderSection theme={themes[theme]}>
-            <h3>Add New Provider</h3>
             <Input
               type="text"
               name="displayName"
@@ -228,21 +245,22 @@ const AiProviderModal = ({ isOpen, onClose }) => {
           </AddProviderSection>
         )}
 
-        <DefaultProviderSection theme={themes[theme]}>
-          <h3>Default Provider</h3>
-          {isLoadingDefaultProvider && <p>Loading default provider...</p>}
-          {isErrorDefaultProvider && <p style={{ color: 'red' }}>Error loading default provider: {defaultProviderError.message}</p>}
-          {defaultAiProvider && (
-            <p>
-              Display Name: {defaultAiProvider.displayName}
-            </p>
-          )}
-        </DefaultProviderSection>
+        {!showAddProviderForm && (
+          <DefaultProviderSection theme={themes[theme]}>
+            <div>
+              Default Provider:
+            </div>
+            <div>
+              {isLoadingDefaultProvider && <p>Loading...</p>}
+              {isErrorDefaultProvider && <p style={{ color: 'red' }}>Error: {defaultProviderError.message}</p>}
+              {defaultAiProvider && (
+                <span>{defaultAiProvider.displayName}</span>
+              )}
+            </div>
+          </DefaultProviderSection>
+        )}
 
         <ProviderList show={!showAddProviderForm} theme={themes[theme]}>
-          <h3>
-            Existing Providers ({isLoadingProviders ? 'Loading...' : ''})
-          </h3>
           {isErrorProviders && (
             <p style={{ color: 'red' }}>Error loading providers: {providersError.message}</p>
           )}
@@ -251,17 +269,24 @@ const AiProviderModal = ({ isOpen, onClose }) => {
             aiProviders.map((provider) => (
               <ProviderItem key={provider.id} theme={themes[theme]}>
                 {provider.displayName}
-                  <div>
-                    <DeleteButton onClick={() => handleDeleteProvider(provider.id)} theme={themes[theme]} disabled={isRemovingProvider && selectedProviderIdToDelete === provider.id}>
-                      {isRemovingProvider && selectedProviderIdToDelete === provider.id ? 'Deleting...' : 'Delete'}
-                    </DeleteButton>
-                  </div>
+                <div>
+                  <SetDefaultButton onClick={() => handleSetDefaultProvider(provider.id)} theme={themes[theme]} disabled={isSettingAsDefault}>
+                    {isSettingAsDefault ? 'Setting...' : 'Set Default'}
+                  </SetDefaultButton>
+                  <DeleteButton onClick={() => handleDeleteProvider(provider.id)} theme={themes[theme]} disabled={isRemovingProvider && selectedProviderIdToDelete === provider.id}>
+                    {isRemovingProvider && selectedProviderIdToDelete === provider.id ? 'Deleting...' : 'Delete'}
+                  </DeleteButton>
+                </div>
               </ProviderItem>
             ))}
-            {(isRemoveProviderError && removeProviderError) && (
-                <p style={{ color: 'red' }}>Error deleting provider: {removeProviderError.message}</p>
-            )}
-            {isProviderRemoved && <p style={{ color: 'green' }}>Provider deleted successfully!</p>}
+          {(isRemoveProviderError && removeProviderError) && (
+            <p style={{ color: 'red' }}>Error deleting provider: {removeProviderError.message}</p>
+          )}
+          {isProviderRemoved && <p style={{ color: 'green' }}>Provider deleted successfully!</p>}
+          {(isSetAsDefaultError && setAsDefaultError) && (
+            <p style={{ color: 'red' }}>Error setting as default: {setAsDefaultError.message}</p>
+          )}
+          {isSetAsDefaultSuccess && <p style={{ color: 'green' }}>Successfully set as default!</p>}
         </ProviderList>
       </ModalContent>
     </ModalOverlay>

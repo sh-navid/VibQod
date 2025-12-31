@@ -74,4 +74,18 @@ const getDefaultAiProviderById = async (id) => {
     return response.status; // Return the status code, e.g., 204
 }
 
-export { createAiProvider, getAiProviders, getAiProviderById, deleteAiProvider, getAiProviderByDefault, getDefaultAiProviderById };
+const setDefaultAiProvider = async (id) => {
+    const response = await fetch(`${API_BASE_URL}/AIProvider/default/${id}`, {
+        method: 'PUT',
+        headers: { 'accept': '*/*' },
+    });
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+
+        throw new Error(errorData.message || `Failed to set AI provider with id ${id} as default`);
+    }
+    return response.status;
+};
+
+
+export { createAiProvider, getAiProviders, getAiProviderById, deleteAiProvider, getAiProviderByDefault, getDefaultAiProviderById, setDefaultAiProvider };
