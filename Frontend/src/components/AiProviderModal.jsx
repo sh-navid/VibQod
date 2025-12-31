@@ -57,6 +57,14 @@ const Button = styled.button`
   }
 `;
 
+const DeleteButton = styled(Button)`
+  background-color: ${props => props.theme.deleteButtonBackground};
+  color: ${props => props.theme.deleteButtonText};
+  &:hover {
+    background-color: ${props => props.theme.deleteButtonHover};
+  }
+`;
+
 const AddButton = styled(Button)`
   &:before {
     content: '+ ';
@@ -99,6 +107,9 @@ const ProviderItem = styled.div`
   border-radius: 8px;
   margin-bottom: 10px;
   border: 1px solid ${props => props.theme.borderColor};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const AiProviderModal = ({ isOpen, onClose }) => {
@@ -109,6 +120,7 @@ const AiProviderModal = ({ isOpen, onClose }) => {
     displayName: '',
   });
   const [showAddProviderForm, setShowAddProviderForm] = useState(false);
+  const [selectedProviderIdToDelete, setSelectedProviderIdToDelete] = useState(null);
 
   const { theme } = useContext(ThemeContext);
   const {
@@ -121,6 +133,11 @@ const AiProviderModal = ({ isOpen, onClose }) => {
     isProviderAdded,
     isAddProviderError,
     addProviderError,
+    removeAiProvider,
+    isRemovingProvider,
+    isProviderRemoved,
+    isRemoveProviderError,
+    removeProviderError,
   } = useAiProvider();
 
   const handleInputChange = (e) => {
@@ -131,6 +148,12 @@ const AiProviderModal = ({ isOpen, onClose }) => {
     await addAiProvider(providerData);
     setProviderData({ apiKey: '', baseUrl: '', model: '', displayName: '' });
     setShowAddProviderForm(false);
+  };
+
+  const handleDeleteProvider = async (id) => {
+    setSelectedProviderIdToDelete(id);
+    await removeAiProvider(id);
+    setSelectedProviderIdToDelete(null);
   };
 
   if (!isOpen) {
@@ -206,8 +229,17 @@ const AiProviderModal = ({ isOpen, onClose }) => {
             aiProviders.map((provider) => (
               <ProviderItem key={provider.id} theme={themes[theme]}>
                 {provider.displayName}
+                  <div>
+                    <DeleteButton onClick={() => handleDeleteProvider(provider.id)} theme={themes[theme]} disabled={isRemovingProvider && selectedProviderIdToDelete === provider.id}>
+                      {isRemovingProvider && selectedProviderIdToDelete === provider.id ? 'Deleting...' : 'Delete'}
+                    </DeleteButton>
+                  </div>
               </ProviderItem>
             ))}
+            {(isRemoveProviderError && removeProviderError) && (
+                <p style={{ color: 'red' }}>Error deleting provider: {removeProviderError.message}</p>
+            )}
+            {isProviderRemoved && <p style={{ color: 'green' }}>Provider deleted successfully!</p>}
         </ProviderList>
       </ModalContent>
     </ModalOverlay>
