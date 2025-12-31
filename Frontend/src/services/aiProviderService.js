@@ -51,7 +51,7 @@ const deleteAiProvider = async (id) => {
     return response.status; // Return the status code, e.g., 204
 };
 
-const getAiProviderByDefault = async () => {
+const getDefaultAiProvider = async () => {
     const response = await fetch(`${API_BASE_URL}/AIProvider/default`, {
         headers: { "accept": "*/*" }
     });
@@ -61,18 +61,6 @@ const getAiProviderByDefault = async () => {
     }
     return response.json();
 };
-
-const getDefaultAiProviderById = async (id) => {
-    const response = await fetch(`${API_BASE_URL}/AIProvider/default/${id}`, {
-        headers: { "accept": "*/*" },
-    });
-
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Failed to get default AI Provider by id ${id}`);
-    }
-    return response.status; // Return the status code, e.g., 204
-}
 
 const setDefaultAiProvider = async (id) => {
     const response = await fetch(`${API_BASE_URL}/AIProvider/default/${id}`, {
@@ -88,4 +76,4 @@ const setDefaultAiProvider = async (id) => {
 };
 
 
-export { createAiProvider, getAiProviders, getAiProviderById, deleteAiProvider, getAiProviderByDefault, getDefaultAiProviderById, setDefaultAiProvider };
+export { createAiProvider, getAiProviders, getAiProviderById, deleteAiProvider, getDefaultAiProvider, setDefaultAiProvider };

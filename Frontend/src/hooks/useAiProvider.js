@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { createAiProvider, getAiProviders, getAiProviderById, deleteAiProvider, getAiProviderByDefault, getDefaultAiProviderById, setDefaultAiProvider } from '../services/aiProviderService';
+import { createAiProvider, getAiProviders, getAiProviderById, deleteAiProvider, getDefaultAiProvider, setDefaultAiProvider } from '../services/aiProviderService';
 
 const useAiProvider = () => {
     const queryClient = useQueryClient();
@@ -20,21 +20,6 @@ const useAiProvider = () => {
         });
     };
 
-    // Fetch default AI provider
-    const { data: defaultAiProvider, isLoading: isLoadingDefaultProvider, isError: isErrorDefaultProvider, error: defaultProviderError, refetch: refetchDefaultProvider } = useQuery({
-        queryKey: ['defaultAiProvider'],
-        queryFn: getAiProviderByDefault,
-        refetchOnWindowFocus: true,
-    });
-
-    const useGetDefaultAiProviderById = (id) => {
-        return useQuery({
-            queryKey: ['defaultAiProvider', id],
-            queryFn: () => getDefaultAiProviderById(id),
-            enabled: !!id,
-        });
-
-    }
 
     // Create AI provider
     const { mutate: addAiProvider, isLoading: isAddingProvider, isSuccess: isProviderAdded, isError: isAddProviderError, error: addProviderError } = useMutation({
@@ -58,11 +43,19 @@ const useAiProvider = () => {
         },
     });
 
+    // Fetch default AI provider
+    const { data: defaultAiProvider, isLoading: isLoadingDefaultProvider, isError: isErrorDefaultProvider, error: defaultProviderError, refetch: refetchDefaultProvider } = useQuery({
+        queryKey: ['defaultAiProvider'],
+        queryFn: getDefaultAiProvider,
+        refetchOnWindowFocus: true,
+    });
+
     // Set AI provider as default
     const { mutate: setAsDefaultAiProvider, isLoading: isSettingAsDefault, isSuccess: isSetAsDefaultSuccess, isError: isSetAsDefaultError, error: setAsDefaultError } = useMutation({
         mutationFn: setDefaultAiProvider,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['defaultAiProvider','aiProviders'] });
+            queryClient.invalidateQueries({ queryKey: ['aiProviders','defaultAiProvider'] }); // Invalidate and refetch
+            refetchDefaultProvider(); // Refetch here
         },
         onError: (err) => {
             console.error('Failed to set AI provider as default:', err);
@@ -91,7 +84,6 @@ const useAiProvider = () => {
         isProviderRemoved,
         isRemoveProviderError,
         removeProviderError,
-        useGetDefaultAiProviderById,
         setAsDefaultAiProvider,
         isSettingAsDefault,
         isSetAsDefaultSuccess,

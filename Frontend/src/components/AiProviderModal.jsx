@@ -157,12 +157,12 @@ const AiProviderModal = ({ isOpen, onClose }) => {
     isLoadingDefaultProvider,
     isErrorDefaultProvider,
     defaultProviderError,
-    getDefaultAiProviderById,
     setAsDefaultAiProvider,
     isSettingAsDefault,
     isSetAsDefaultSuccess,
     isSetAsDefaultError,
-    setAsDefaultError
+    setAsDefaultError,
+    refetchDefaultProvider
   } = useAiProvider();
 
   const handleInputChange = (e) => {
