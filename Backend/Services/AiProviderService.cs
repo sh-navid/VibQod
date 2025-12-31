@@ -93,6 +93,18 @@ namespace Backend.Services
                 return false; // Provider not found
             }
 
+            // Check if the provider to be deleted is the default
+            if (provider.IsDefault)
+            {
+                // Find the next available provider to make it the default
+                var nextDefaultCandidate = await _context.AiProviders.FirstOrDefaultAsync(p => p.Id != id);
+
+                if (nextDefaultCandidate != null)
+                {
+                    nextDefaultCandidate.IsDefault = true;
+                }
+            }
+
             _context.AiProviders.Remove(provider);
             await _context.SaveChangesAsync();
             return true;
