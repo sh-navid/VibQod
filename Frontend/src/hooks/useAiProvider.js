@@ -1,15 +1,40 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { createAiProvider, getAiProviders } from '../services/aiProviderService';
+import { createAiProvider, getAiProviders, getAiProviderById, deleteAiProvider, getAiProviderByDefault, getDefaultAiProviderById } from '../services/aiProviderService';
 
 const useAiProvider = () => {
     const queryClient = useQueryClient();
 
-    // Fetch AI providers
+    // Fetch all AI providers
     const { data: aiProviders, isLoading: isLoadingProviders, isError: isErrorProviders, error: providersError, refetch: refetchProviders } = useQuery({
         queryKey: ['aiProviders'],
         queryFn: getAiProviders,
         refetchOnWindowFocus: true, // Refetch on window focus
     });
+
+    // Fetch AI provider by ID
+    const useAiProviderById = (id) => {
+        return useQuery({
+            queryKey: ['aiProvider', id],
+            queryFn: () => getAiProviderById(id),
+            enabled: !!id, // Only run the query if an ID is provided
+        });
+    };
+
+    // Fetch default AI provider
+    const { data: defaultAiProvider, isLoading: isLoadingDefaultProvider, isError: isErrorDefaultProvider, error: defaultProviderError, refetch: refetchDefaultProvider } = useQuery({
+        queryKey: ['defaultAiProvider'],
+        queryFn: getAiProviderByDefault,
+        refetchOnWindowFocus: true,
+    });
+
+    const useGetDefaultAiProviderById = (id) => {
+        return useQuery({
+            queryKey: ['defaultAiProvider', id],
+            queryFn: () => getDefaultAiProviderById(id),
+            enabled: !!id,
+        });
+
+    }
 
     // Create AI provider
     const { mutate: addAiProvider, isLoading: isAddingProvider, isSuccess: isProviderAdded, isError: isAddProviderError, error: addProviderError } = useMutation({
@@ -19,6 +44,17 @@ const useAiProvider = () => {
         },
         onError: (err) => {
             console.error('Failed to add AI provider:', err);
+        },
+    });
+
+    // Delete AI provider
+    const { mutate: removeAiProvider, isLoading: isRemovingProvider, isSuccess: isProviderRemoved, isError: isRemoveProviderError, error: removeProviderError } = useMutation({
+        mutationFn: deleteAiProvider,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['aiProviders'] }); // Invalidate and refetch
+        },
+        onError: (err) => {
+            console.error('Failed to delete AI provider:', err);
         },
     });
 
@@ -33,6 +69,18 @@ const useAiProvider = () => {
         isProviderAdded,
         isAddProviderError,
         addProviderError,
+        useAiProviderById,
+        defaultAiProvider,
+        isLoadingDefaultProvider,
+        isErrorDefaultProvider,
+        defaultProviderError,
+        refetchDefaultProvider,
+        removeAiProvider,
+        isRemovingProvider,
+        isProviderRemoved,
+        isRemoveProviderError,
+        removeProviderError,
+        useGetDefaultAiProviderById
     };
 };
 
