@@ -8,8 +8,12 @@ VibQod is your AI-Powered **Vibe coding** Application.
   <picture width="100%">
     <source media="(prefers-color-scheme: dark)" srcset="./assets/logos/LogoSquare.png">
     <source media="(prefers-color-scheme: light)" srcset="./assets/logos/LogoInvert.png">
-    <img src="./assets/logos/LogoInvert.png" alt="VibQod Logo" width="160">
+    <img src="./assets/logos/LogoInvert.png" alt="VibQod Code Assistant Application Logo" width="80">
   </picture>
+</div>
+
+<div align="center">
+<img src="./showcase/V10.png" alt="VibQod Code Assistant Application Showcase" width="250">
 </div>
 
 ---
