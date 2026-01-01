@@ -2,6 +2,10 @@ using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using Backend.Services;
+using Backend.Data;
+using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Services
 {
@@ -10,23 +14,43 @@ namespace Backend.Services
         Task<string?> GetCompletionAsync(string prompt);
     }
 
-    public class AIService(IConfiguration configuration, IHttpClientFactory httpClientFactory) : IAIService
+    public class AIService(IConfiguration configuration, IHttpClientFactory httpClientFactory, IAiProviderService aiProviderService, ApplicationDbContext context) : IAIService
     {
         private readonly IConfiguration _configuration = configuration;
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private readonly IAiProviderService _aiProviderService = aiProviderService;
+        private readonly ApplicationDbContext _context = context;
 
         public async Task<string?> GetCompletionAsync(string prompt)
         {
             try
             {
-                var apiKey = _configuration["AI:ApiKey"];
-                var baseUrl = _configuration["AI:BaseUrl"];
-                var model = _configuration["AI:Model"];
+                // Retrieve the default AI provider
+                var defaultProviderDto = await _aiProviderService.GetDefaultAiProviderAsync();
+
+                if (defaultProviderDto == null)
+                {
+                    Console.WriteLine("No default AI provider configured.");
+                    return null;
+                }
+
+                // Fetch the AI provider model to get detailed configuration
+                var aiProvider = await _context.AiProviders.FirstOrDefaultAsync(p => p.Id == defaultProviderDto.Id);
+
+                if (aiProvider == null)
+                {
+                    Console.WriteLine($"AI provider with ID {defaultProviderDto.Id} not found.");
+                    return null;
+                }
+
+                var apiKey = aiProvider.ApiKey;
+                var baseUrl = aiProvider.BaseUrl;
+                var model = aiProvider.Model;
 
 
                 if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(baseUrl) || string.IsNullOrEmpty(model))
                 {
-                    Console.WriteLine("AI configuration is missing. Please check your appsettings.json.");
+                    Console.WriteLine("AI configuration is missing. Please check your AI provider settings.");
                     return null;
                 }
 
