@@ -14,3 +14,7 @@ n8x.json
 # Lock File
 *-lock.json
 *.sln
+
+# Database
+*.db
+*.db-*
